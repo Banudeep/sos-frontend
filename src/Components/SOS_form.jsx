@@ -2,11 +2,16 @@ import React, { useState, useRef } from "react";
 import { MdKeyboardVoice } from "react-icons/md";
 import { FaImage } from "react-icons/fa";
 import styles from "./SOS_form.module.css"; // Import the CSS module
+import { useLocation } from "react-router-dom";
 
 function SOSForm() {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
+
+  const location = useLocation();
+  const accidentId = location.state?.serverResponse;
+  // console.log(accidentId, "accidentId");
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -27,21 +32,30 @@ function SOSForm() {
     recognition.start();
 
     recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript; // Capture the speech transcript
+      const transcript = event.results[0][0].transcript;
+      console.log("Recognized Speech:", transcript); // Debugging output
       setText(transcript); // Update local state
       recognition.stop();
 
+      const payload = {
+        voiceInput: transcript,
+        accidentId: accidentId,
+      };
+
+      console.log("Sending to server:", JSON.stringify(payload)); // Print JSON string before sending
+
       // Send the transcript to the Node.js server
-      fetch("http://localhost:3000/Voice", {
+      fetch("http://localhost:3000/api/voice", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ voiceInput: transcript }),
+        body: JSON.stringify(payload),
       })
         .then((response) => response.json())
         .then((data) => {
           alert(`Response from server: ${data.message}`);
+          console.log("API call for voice: ", data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -56,26 +70,48 @@ function SOSForm() {
   };
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    setImages([...files]);
+    const file = event.target.files[0];
+    if (!file) {
+      alert("Please select an image to upload.");
+      return;
+    }
 
-    const formData = new FormData();
-    Array.from(files).forEach((file) => {
-      formData.append("images", file);
-    });
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      const base64Image = evt.target.result; // This is the Base64-encoded image
 
-    fetch("http://localhost:3000/Image", {
+      // Now send this Base64 string to the server as part of the JSON object
+      sendDataToServer(base64Image);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const sendDataToServer = (base64Image) => {
+    const payload = {
+      image: base64Image,
+      accidentId: accidentId, // Assuming 'accidentId' is available in your scope
+    };
+
+    fetch("http://localhost:3000/api/image", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((data) => alert(`Response from server: ${data.message}`))
-      .catch((error) => console.error("Error:", error));
+      .then((data) => {
+        alert(`Server response: ${data.message}`);
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+        alert("Failed to upload image.");
+      });
   };
 
   const submitAccidentReport = (event) => {
     event.preventDefault();
-    console.log("Submitting Accident Report:", { text, images });
+    // console.log("Submitting Accident Report:", { text, images });
     // Further processing or server submission would go here
   };
 

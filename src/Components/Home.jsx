@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
+import { useLocation } from "react-router-dom";
 
 export default function App() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // Hook to get the navigate function
 
-  const goToSOSPage = () => {
-    navigate("/sos"); // Navigate to the SOS page after sending SOS
+  const goToSOSPage = (serverResponse) => {
+    navigate("/sos", { state: { serverResponse } }); // Navigate to the SOS page after sending SOS
   };
 
   const sendSOS = () => {
@@ -40,7 +41,7 @@ export default function App() {
             });
 
             // Send data to Node.js server
-            fetch("http://localhost:3000/api/sos", {
+            fetch("http://localhost:3000/api/report", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -53,7 +54,8 @@ export default function App() {
               .then((response) => response.json())
               .then((serverResponse) => {
                 alert(`Response from server: ${serverResponse.message}`);
-                goToSOSPage(); // Navigate after successful server response
+                console.log({ serverResponse });
+                goToSOSPage(serverResponse.accidentId); // Navigate after successful server response
               })
               .catch((error) => console.error("Error:", error));
           })
