@@ -1,0 +1,43 @@
+/* Sets the background color of the entire page to gray */
+body {
+  background-color: #474747;
+  display: flex;
+  flex-direction: column; /* Corrected from 'flex: row;' to ensure vertical stacking */
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
+  height: 100vh; /* Ensures the body takes the full viewport height */
+  margin: 0; /* Removes default margin to avoid scrollbars */
+}
+
+.container {
+  display: flex;
+  flex-direction: column; /* Stacks children vertically */
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Centers the text of all child elements */
+  height: 50vh; /* Adjust height as necessary */
+}
+
+button {
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid transparent;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  transition: background-color 0.5s ease, color 0.5s ease,
+    border-color 0.5s ease, transform 0.5s ease;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px; /* Provides space between header and button */
+}
+
+button:hover {
+  background-color: #ff0000;
+  color: #fff;
+  border-color: #ff0000;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
