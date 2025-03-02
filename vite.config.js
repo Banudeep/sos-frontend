@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  base: "/sos-app/",
   plugins: [react()],
+  build: {
+    outDir: "build", // Vercel looks for a "build" directory by default; this line is optional if you prefer a different folder name
+  },
 });
