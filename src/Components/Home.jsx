@@ -35,7 +35,7 @@ export default function App() {
             };
 
             // Log the data before sending it to the server
-            console.log("Sending the following data to the server:", {
+            console.log("Sending the following data to the server: ", {
               timestamp,
               location: locationDetails,
             });
