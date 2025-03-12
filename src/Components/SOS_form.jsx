@@ -70,46 +70,17 @@ function SOSForm() {
     };
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  function handleFileChange(event) {
     console.log(event, file);
-    if (!file) {
-      alert("Please select an image to upload.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function (evt) {
-      const base64Image = evt.target.result; // This is the Base64-encoded image
-
-      // Now send this Base64 string to the server as part of the JSON object
-      sendDataToServer(base64Image);
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    reader.onload = () => {
+      console.log(reader.result);
     };
-    reader.readAsDataURL(file);
-  };
-
-  const sendDataToServer = (base64Image) => {
-    const payload = {
-      image: base64Image,
-      accidentId: accidentId, // Assuming 'accidentId' is available in your scope
+    reader.onerror = (error) => {
+      console.log("Error: ", error);
     };
-    let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/image";
-    fetch(SOS_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert(`Server response: ${data.message}`);
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        alert("Failed to upload image.");
-      });
-  };
+  }
 
   const submitAccidentReport = (event) => {
     event.preventDefault();
