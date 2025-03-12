@@ -71,7 +71,7 @@ function SOSForm() {
   };
 
   function handleFileChange(event) {
-    console.log(event, file);
+    console.log(event);
     var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = () => {
