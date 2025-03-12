@@ -72,6 +72,7 @@ function SOSForm() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    console.log(event);
     if (!file) {
       alert("Please select an image to upload.");
       return;
