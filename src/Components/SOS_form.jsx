@@ -9,6 +9,7 @@ function SOSForm() {
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
   const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
+  comst[(image, setImage)] = useState();
 
   const location = useLocation();
   const accidentId = location.state?.serverResponse;
@@ -76,6 +77,7 @@ function SOSForm() {
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = () => {
       console.log(reader.result);
+      setImage(reader.result);
     };
     reader.onerror = (error) => {
       console.log("Error: ", error);
@@ -105,6 +107,11 @@ function SOSForm() {
         </div>
         <div className={styles.fileInputContainer}>
           <input type="file" accept="image/" onChange={handleFileChange} />
+          {image == "" || image == null ? (
+            ""
+          ) : (
+            <img width={100} height={100} src={image} />
+          )}
         </div>
         <button type="submit" className={styles.submitButton}>
           Submit Report
