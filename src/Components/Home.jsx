@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 export default function App() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate(); // Hook to get the navigate function
-
+  const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
   const goToSOSPage = (serverResponse) => {
     navigate("/sos", { state: { serverResponse } }); // Navigate to the SOS page after sending SOS
   };
@@ -39,9 +39,9 @@ export default function App() {
               timestamp,
               location: locationDetails,
             });
-
+            let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/report";
             // Send data to Node.js server
-            fetch("http://localhost:3000/api/report", {
+            fetch(SOS_API_URL, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

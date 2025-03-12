@@ -8,6 +8,7 @@ function SOSForm() {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
+  const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
 
   const location = useLocation();
   const accidentId = location.state?.serverResponse;
@@ -43,9 +44,9 @@ function SOSForm() {
       };
 
       console.log("Sending to server:", JSON.stringify(payload)); // Print JSON string before sending
-
+      let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/voice";
       // Send the transcript to the Node.js server
-      fetch("http://localhost:3000/api/voice", {
+      fetch(SOS_API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,8 +92,8 @@ function SOSForm() {
       image: base64Image,
       accidentId: accidentId, // Assuming 'accidentId' is available in your scope
     };
-
-    fetch("http://localhost:3000/api/image", {
+    let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/image";
+    fetch(SOS_API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
