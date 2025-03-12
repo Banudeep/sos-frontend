@@ -72,7 +72,7 @@ function SOSForm() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(event);
+    console.log(event, file);
     if (!file) {
       alert("Please select an image to upload.");
       return;
@@ -133,20 +133,7 @@ function SOSForm() {
           </button>
         </div>
         <div className={styles.fileInputContainer}>
-          <button
-            onClick={() => fileInputRef.current.click()}
-            className={styles.fileButton}
-          >
-            Upload Images <FaImage className={styles.iconLeftMargin} />
-          </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            id="accidentImages"
-            multiple
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-          />
+          <input type="file" accept="image/" onChange={handleFileChange} />
         </div>
         <button type="submit" className={styles.submitButton}>
           Submit Report
