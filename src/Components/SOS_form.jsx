@@ -87,12 +87,15 @@ function SOSForm() {
 
   function uploadImage() {
     const formData = new FormData();
-    formData.append("images", image);
+    formData.append("base64", image);
     formData.append("accidentId", accidentId);
     let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/image";
     fetch(SOS_API_URL, {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({
+        base64: image,
+        accidentId: accidentId,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
