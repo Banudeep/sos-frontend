@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sos" element={<SOS_form />} />
-          <Route path="/ambulance" element={<Ambulance />} />
+          <Route path="/ambulance/:accidentId" element={<Ambulance />} />
         </Routes>
       </BrowserRouter>
     </StrictMode>
