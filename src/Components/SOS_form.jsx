@@ -9,7 +9,7 @@ function SOSForm() {
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
   const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
-  comst[(image, setImage)] = useState();
+  const [image, setImage] = useState();
 
   const location = useLocation();
   const accidentId = location.state?.serverResponse;
