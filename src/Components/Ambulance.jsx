@@ -10,6 +10,10 @@ function Ambulance() {
     retrieveAccidentDetails(accidentId);
   }, [accidentId]);
 
+  useEffect(() => {
+    console.log(PredictedClass, body_parts);
+  }, [PredictedClass, body_parts]);
+
   const [PredictedClass, setPredictedClass] = useState();
   const [body_parts, setBody_parts] = useState();
 
@@ -33,7 +37,6 @@ function Ambulance() {
         console.log(data); // Log the data returned from the server
         setPredictedClass(data.predicted_class);
         setBody_parts(data.body_parts);
-        console.log(PredictedClass, body_parts);
       })
       .catch((error) => {
         console.error("Error:", error);
