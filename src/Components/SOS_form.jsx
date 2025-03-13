@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MdKeyboardVoice } from "react-icons/md";
 import { FaImage } from "react-icons/fa";
 import styles from "./SOS_form.module.css"; // Import the CSS module
@@ -85,6 +85,11 @@ function SOSForm() {
       console.log("Error: ", error);
     };
   }
+
+  useEffect(() => {
+    console.log("Image changed: ", image);
+    uploadImage();
+  }, [image]);
 
   function uploadImage() {
     console.log("Uploading image to server...", image);
