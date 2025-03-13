@@ -85,7 +85,7 @@ function SOSForm() {
   }
 
   useEffect(() => {
-    console.log("Image changed: ", image);
+    // console.log("Image changed: ", image);
     uploadImage();
   }, [image]);
 
