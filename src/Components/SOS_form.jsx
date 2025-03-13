@@ -78,10 +78,30 @@ function SOSForm() {
     reader.onload = () => {
       console.log(reader.result);
       setImage(reader.result);
+      uploadImage();
     };
     reader.onerror = (error) => {
       console.log("Error: ", error);
     };
+  }
+
+  function uploadImage() {
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("accidentId", accidentId);
+    fetch(VITE_SOS_API_URL + "/image", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setImages([...images, data.url]);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to upload image to server.");
+      });
   }
 
   const submitAccidentReport = (event) => {
