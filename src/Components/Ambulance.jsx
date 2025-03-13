@@ -10,12 +10,12 @@ function Ambulance() {
     retrieveAccidentDetails(accidentId);
   }, [accidentId]);
 
+  const [PredictedClass, setPredictedClass] = useState();
+  const [body_parts, setBody_parts] = useState();
+
   useEffect(() => {
     console.log(PredictedClass, body_parts);
   }, [PredictedClass, body_parts]);
-
-  const [PredictedClass, setPredictedClass] = useState();
-  const [body_parts, setBody_parts] = useState();
 
   function retrieveAccidentDetails() {
     // console.log("Uploading image to server...", image, accidentId);
