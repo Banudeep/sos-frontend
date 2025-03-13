@@ -8,7 +8,6 @@ function SOSForm() {
   const [text, setText] = useState("");
   // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
-  const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
   const [image, setImage] = useState();
 
   const location = useLocation();
