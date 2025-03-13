@@ -4,7 +4,7 @@ import styles from "./Home.module.css";
 import { useLocation } from "react-router-dom";
 
 export default function App() {
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const navigate = useNavigate(); // Hook to get the navigate function
   const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
   const goToSOSPage = (serverResponse) => {
@@ -12,9 +12,9 @@ export default function App() {
   };
 
   const sendSOS = () => {
-    setMessage("SOS Alert Sent!");
+    // setMessage("SOS Alert Sent!");
     console.log("🚨 SOS Alert Sent! 🚨");
-    alert("SOS Alert Sent!");
+    // alert("SOS Alert Sent!");
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -53,7 +53,7 @@ export default function App() {
             })
               .then((response) => response.json())
               .then((serverResponse) => {
-                alert(`Response from server: ${serverResponse.message}`);
+                // alert(`Response from server: ${serverResponse.message}`);
                 console.log({ serverResponse });
                 goToSOSPage(serverResponse.accidentId); // Navigate after successful server response
               })
@@ -75,7 +75,7 @@ export default function App() {
         <h1 className="text-2xl font-bold">SOS Alert System</h1>
       </header>
       <button onClick={sendSOS}>Send SOS 🚨</button>
-      {message && <p className="mt-4 text-lg text-red-700">{message}</p>}
+      {/* {message && <p className="mt-4 text-lg text-red-700">{message}</p>} */}
     </div>
   );
 }
