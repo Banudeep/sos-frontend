@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 
 function SOSForm() {
   const [text, setText] = useState("");
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
   const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
   const [image, setImage] = useState();
@@ -100,7 +100,7 @@ function SOSForm() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setImages([...images, data.url]);
+        // setImages([...images, data.url]);
       })
       .catch((error) => {
         console.error("Error:", error);
