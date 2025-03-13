@@ -35,7 +35,7 @@ function Ambulance() {
       })
       .then((data) => {
         console.log(data); // Log the data returned from the server
-        setPredictedClass(data.predicted_class);
+        setPredictedClass(data.PredictedClass);
         setBody_parts(data.body_parts);
       })
       .catch((error) => {
