@@ -78,8 +78,6 @@ function SOSForm() {
     reader.onload = () => {
       setImage(reader.result);
       console.log(reader.result);
-      console.log("Image set: ", image);
-      uploadImage();
     };
     reader.onerror = (error) => {
       console.log("Error: ", error);
@@ -92,7 +90,7 @@ function SOSForm() {
   }, [image]);
 
   function uploadImage() {
-    console.log("Uploading image to server...", image);
+    // console.log("Uploading image to server...", image);
     let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/image";
     fetch(SOS_API_URL, {
       method: "POST",
