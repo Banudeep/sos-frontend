@@ -1,5 +1,6 @@
 import React from "react";
-import { useParams, useEffect } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 function Ambulance() {
   let { accidentId } = useParams();
