@@ -25,15 +25,14 @@ function Ambulance() {
     })
       .then((response) => {
         if (response.ok) {
-          console.log(response);
-          setPredictedClass(response.json(PredictedClass));
-          setBody_parts(response.json(body_parts));
           return response.json(); // Parse the JSON of the response if the call was successful
         }
         throw new Error("Network response was not ok."); // Throw an error if the call was not successful
       })
       .then((data) => {
         console.log(data); // Log the data returned from the server
+        setPredictedClass(data.predicted_class);
+        setBody_parts(data.body_parts);
       })
       .catch((error) => {
         console.error("Error:", error);
