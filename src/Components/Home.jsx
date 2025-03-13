@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Home.module.css";
 import { useLocation } from "react-router-dom";
 
-export default function App() {
+export default function Home() {
   // const [message, setMessage] = useState("");
   const navigate = useNavigate(); // Hook to get the navigate function
-  const VITE_SOS_API_URL = process.env.VITE_SOS_API_URL;
   const goToSOSPage = (serverResponse) => {
     navigate("/sos", { state: { serverResponse } }); // Navigate to the SOS page after sending SOS
   };

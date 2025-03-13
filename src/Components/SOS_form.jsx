@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 
 function SOSForm() {
   const [text, setText] = useState("");
-  // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null); // Ref to handle file input
   const [image, setImage] = useState();
 

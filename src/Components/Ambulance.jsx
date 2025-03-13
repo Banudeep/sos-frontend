@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import styles from "./Ambulance.module.css";
 
 function Ambulance() {
   let { accidentId } = useParams();
@@ -45,11 +46,13 @@ function Ambulance() {
   }
 
   return (
-    <>
-      <div>Ambulance</div>
-      <div>{PredictedClass}</div>
-      <div>{body_parts}</div>
-    </>
+    <div className={styles.container}>
+      <h1>Ambulance</h1>
+      <br></br>
+      <div>Predicted Class: {PredictedClass}</div>
+      <br></br>
+      <div>Injured body parts: {body_parts}</div>
+    </div>
   );
 }
 

@@ -1,21 +1,16 @@
 /* Sets the background color of the entire page to gray */
 body {
   background-color: #474747;
-  display: flex;
-  flex-direction: column; /* Corrected from 'flex: row;' to ensure vertical stacking */
-  justify-content: center; /* Center children horizontally */
-  align-items: center; /* Center children vertically */
-  height: 100vh; /* Ensures the body takes the full viewport height */
-  margin: 0; /* Removes default margin to avoid scrollbars */
 }
 
 .container {
+  background-color: #474747;
   display: flex;
   flex-direction: column; /* Stacks children vertically */
   justify-content: center;
   align-items: center;
   text-align: center; /* Centers the text of all child elements */
-  height: 50vh; /* Adjust height as necessary */
+  height: 100vh; /* Adjust height as necessary */
 }
 
 button {
