@@ -76,8 +76,9 @@ function SOSForm() {
     var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
     reader.onload = () => {
-      console.log(reader.result);
       setImage(reader.result);
+      console.log(reader.result);
+      console.log("Image set: ", image);
       uploadImage();
     };
     reader.onerror = (error) => {
