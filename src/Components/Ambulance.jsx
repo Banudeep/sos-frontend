@@ -25,6 +25,7 @@ function Ambulance() {
     })
       .then((response) => {
         if (response.ok) {
+          console.log(response);
           setPredictedClass(response.json(PredictedClass));
           setBody_parts(response.json(body_parts));
           return response.json(); // Parse the JSON of the response if the call was successful
