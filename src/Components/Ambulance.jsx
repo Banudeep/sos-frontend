@@ -9,14 +9,43 @@ function Ambulance() {
     console.log("Accident ID from URL:", accidentId);
     // You can now use `accidentId` to fetch data or perform other actions
     retrieveAccidentDetails(accidentId);
+    retrieveImage(accidentId);
   }, [accidentId]);
 
   const [PredictedClass, setPredictedClass] = useState();
   const [body_parts, setBody_parts] = useState();
+  const [image, setImage] = useState();
 
   useEffect(() => {
     console.log(PredictedClass, body_parts);
   }, [PredictedClass, body_parts]);
+
+  function retrieveImage() {
+    // console.log("Uploading image to server...", image, accidentId);
+    let SOS_API_URL =
+      import.meta.env.VITE_SOS_API_URL + "/report/" + accidentId;
+    fetch(SOS_API_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json(); // Parse the JSON of the response if the call was successful
+        }
+        throw new Error("Network response was not ok."); // Throw an error if the call was not successful
+      })
+      .then((data) => {
+        console.log(data); // Log the data returned from the server
+        // setImage(data.image.split("base64,")[1]);
+        setImage(data.image);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to retrieve data from server.");
+      });
+  }
 
   function retrieveAccidentDetails() {
     // console.log("Uploading image to server...", image, accidentId);
@@ -48,6 +77,12 @@ function Ambulance() {
   return (
     <div className={styles.container}>
       <h1>Ambulance</h1>
+      <br></br>
+      {image == "" || image == null ? (
+        ""
+      ) : (
+        <img width={100} height={100} src={image} />
+      )}
       <br></br>
       <div>Predicted Class: {PredictedClass}</div>
       <br></br>
