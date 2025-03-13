@@ -12,8 +12,8 @@ function Ambulance() {
 
   const [PredictedClass, setPredictedClass] = useState();
   const [body_parts, setBody_parts] = useState();
-  retrieve();
-  function retrieve() {
+
+  function retrieveAccidentDetails() {
     // console.log("Uploading image to server...", image, accidentId);
     let SOS_API_URL =
       import.meta.env.VITE_SOS_API_URL + "/ambulance/" + accidentId;
@@ -33,6 +33,7 @@ function Ambulance() {
         console.log(data); // Log the data returned from the server
         setPredictedClass(data.predicted_class);
         setBody_parts(data.body_parts);
+        console.log(PredictedClass, body_parts);
       })
       .catch((error) => {
         console.error("Error:", error);
