@@ -15,16 +15,13 @@ function Ambulance() {
   retrieve();
   function retrieve() {
     // console.log("Uploading image to server...", image, accidentId);
-    let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/ambulance";
+    let SOS_API_URL =
+      import.meta.env.VITE_SOS_API_URL + "/ambulance/" + accidentId;
     fetch(SOS_API_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        base64: image,
-        accidentId: accidentId,
-      }),
     })
       .then((response) => {
         if (response.ok) {
