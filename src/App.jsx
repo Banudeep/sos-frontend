@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import SOS_form from "./Components/SOS_form";
-import Ambulance from "./Components/ambulance";
+import Ambulance from "./Components/Ambulance";
 
 function App() {
   return (
