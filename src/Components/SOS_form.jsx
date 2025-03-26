@@ -61,6 +61,24 @@ function SOSForm() {
           console.error("Error:", error);
           alert("Failed to send voice data to server.");
         });
+
+      let FLASK_API = import.meta.env.VITE_FLASK_API + "/report";
+      fetch(FLASK_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          alert(`Response from server: ${data.message}`);
+          console.log("API call for voice: ", data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Failed to send voice data to server.");
+        });
     };
 
     recognition.onerror = (event) => {
