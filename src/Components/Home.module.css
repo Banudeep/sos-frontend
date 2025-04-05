@@ -4,35 +4,196 @@ body {
 }
 
 .container {
-  background-color: #474747;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 20px;
   display: flex;
-  flex-direction: column; /* Stacks children vertically */
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+}
+
+.emergencyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: rgba(40, 40, 40, 0.8);
+  padding: 15px 25px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.headerIcon {
+  font-size: 32px;
+  color: #ff3b30;
+}
+
+.emergencyHeader h1 {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  justify-content: space-between;
+  padding: 40px 0;
+}
+
+.sosButtonContainer {
+  display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center; /* Centers the text of all child elements */
-  height: 100vh; /* Adjust height as necessary */
+  width: 100%;
+  flex: 1;
+  margin: auto 0;
 }
 
-button {
-  background-color: #000000;
-  color: #ffffff;
-  border: 2px solid transparent;
-  padding: 0.5em 1em;
-  font-size: 1em;
-  transition: background-color 0.5s ease, color 0.5s ease,
-    border-color 0.5s ease, transform 0.5s ease;
+.sosButton {
+  width: 280px;
+  height: 280px;
+  background-color: #c41e3a;
+  border: none;
+  border-radius: 50%;
   cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px; /* Provides space between header and button */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 0 50px rgba(196, 30, 58, 0.3);
+  transition: all 0.3s ease;
+  margin: auto;
 }
 
-button:hover {
-  background-color: #ff0000;
-  color: #fff;
-  border-color: #ff0000;
-  transform: scale(1.05);
+.sosButton:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 0 60px rgba(196, 30, 58, 0.4);
+  background-color: #b41935;
 }
 
-button:active {
-  transform: scale(0.95);
+.sosButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.sosText {
+  color: white;
+  font-size: 3.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.locationInfo {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: rgba(40, 40, 40, 0.8);
+  color: #ccc;
+  font-size: 1rem;
+  padding: 15px 25px;
+  border-radius: 15px;
+  text-align: center;
+  margin-top: auto;
+}
+
+.locationIcon {
+  font-size: 20px;
+  color: #ff3b30;
+  flex-shrink: 0;
+}
+
+.footer {
+  width: 100%;
+  max-width: 600px;
+  background-color: rgba(40, 40, 40, 0.8);
+  color: #ccc;
+  padding: 15px 25px;
+  text-align: center;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+.disclaimer {
+  color: #ff3b30;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.messageBox {
+  color: #ff3b30;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+  padding: 15px 25px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 600px;
+  background-color: rgba(40, 40, 40, 0.8);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    gap: 30px;
+  }
+
+  .emergencyHeader {
+    padding: 12px 20px;
+  }
+
+  .emergencyHeader h1 {
+    font-size: 1.5rem;
+  }
+
+  .sosButton {
+    width: 240px;
+    height: 240px;
+  }
+
+  .sosText {
+    font-size: 3rem;
+  }
+
+  .locationInfo,
+  .messageBox,
+  .footer {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
 }

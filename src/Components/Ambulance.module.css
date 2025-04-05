@@ -1,29 +1,115 @@
 .container {
-  font-family: Arial, sans-serif; /* Sets the font for better text readability */
-  margin: 20px; /* Adds space around the container */
-  margin-left: 400px;
-  margin-right: 400px;
-  background-color: #f9f9f9; /* Light grey background for the container */
-  border-radius: 8px; /* Rounded corners for the container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
-  text-align: center; /* Centers the text within the container */
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+}
 
+.header {
   display: flex;
-  flex-direction: column; /* Stacks children vertically */
-  justify-content: center;
   align-items: center;
-  text-align: center; /* Centers the text of all child elements */
-  height: 95vh; /* Adjust height as necessary */
+  gap: 15px;
+  padding: 20px;
+  background-color: rgba(255, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
-h1 {
-  font-size: 40px; /* Larger text for the heading */
-  color: #000000; /* Dark grey color for the text */
-  margin-bottom: 15px; /* Space below the heading */
+.headerIcon {
+  font-size: 2.5rem;
+  color: #ff0000;
 }
 
-div {
-  font-size: 30px; /* Larger text for the content */
-  color: #000000; /* Medium grey color for the text */
-  margin: 10px 0; /* Vertical spacing around each div element */
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.infoSection {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.infoLabel {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #ff0000;
+  margin-bottom: 10px;
+}
+
+.infoValue {
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.imageContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 0, 0, 0.3);
+}
+
+.bodyParts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bodyPart {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .headerIcon {
+    font-size: 2rem;
+  }
+
+  .infoSection {
+    padding: 15px;
+  }
+
+  .infoLabel {
+    font-size: 1.1rem;
+  }
+
+  .infoValue {
+    font-size: 1rem;
+  }
+
+  .bodyPart {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
 }

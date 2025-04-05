@@ -1,113 +1,302 @@
 /* Styles for SOSForm */
 .container {
-  padding: 70px; /* Increased padding */
-  background-color: #333333;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 80%; /* Increase width */
-  /* max-width: 1000px; Set a maximum width */
-  margin: auto; /* Center the form */
-  /* margin-top: 10px; */
-
-  h1 {
-    font-size: 60px;
-    white-space: nowrap;
-  }
+  min-height: 100vh;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  gap: 40px;
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    sans-serif;
 }
 
 .formHeader {
-  margin-bottom: 60px; /* Increased margin */
-  text-align: center;
-  font-size: 24px; /* Larger font size */
-}
-
-.inputGroup {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px; /* Increased margin */
-}
-
-.textInput {
-  flex: 1;
-  /* padding: 15px; Increased padding */
-  /* margin-right: 15px; */
-  /* border: 2px solid #ccc;
-  border-radius: 6px; 
-  font-size: 16px; 
-  width: 100%;  */
-  margin-right: 15px;
-  max-width: 450px; /* Optional: limits the maximum width */
-  height: 100px; /* Increased height */
-  padding: 10px; /* Comfortable padding around the text */
-  font-size: 18px; /* Larger text for better visibility */
-  border: 2px solid #ccc; /* Thicker border for better visibility */
-  border-radius: 5px; /* Rounded corners for aesthetics */
-  box-sizing: border-box;
-}
-
-.voiceButton {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 15px 25px; /* Increased padding */
-  border-radius: 6px; /* Slightly more rounded corners */
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 50px; /* Larger text size */
+  gap: 15px;
+  background-color: rgba(40, 40, 40, 0.9);
+  padding: 20px 25px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.headerIcon {
+  font-size: 36px;
+  color: #ff3b30;
+}
+
+.formHeader h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 30px;
+  background-color: rgba(40, 40, 40, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.inputGroup {
+  position: relative;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.label {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: block;
+  /* text-align: center; */
+  letter-spacing: 0.3px;
+}
+
+.textInput {
+  width: 89%;
+  padding: 15px 50px 15px 15px;
+  border: 2px solid rgba(255, 0, 0, 0.2);
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 1.1rem;
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+}
+
+.textInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.voiceButton {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: rgba(255, 0, 0, 0.1);
+  border: 2px solid rgba(255, 0, 0, 0.3);
+  color: #ff0000;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
 }
 
 .voiceButton:hover {
-  background-color: #0056b3;
+  background-color: rgba(255, 0, 0, 0.2);
+  transform: scale(1.1);
+  border-color: rgba(255, 0, 0, 0.5);
+}
+
+.voiceButton:disabled {
+  color: rgba(255, 0, 0, 0.3);
+  cursor: not-allowed;
+}
+
+.recording .voiceButton {
+  animation: pulse 1.5s infinite;
+}
+
+.pulsingIcon {
+  color: #ff0000;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .fileInputContainer {
   display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 15px;
+}
+
+.fileButton {
+  display: flex;
+  align-items: center;
   justify-content: center;
-
-  margin-bottom: 30px; /* Increased margin */
-
-  button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 15px 25px; /* Increased padding */
-    border-radius: 6px; /* Slightly more rounded corners */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px; /* Larger text size */
-  }
-
-  .button:hover {
-    background-color: #0056b3;
-  }
-}
-
-.iconLeftMargin {
-  margin-left: 100px;
-}
-
-.fileInput {
-  /* width: 100%; */
-  padding: 10px 0; /* Added padding for better handling */
+  gap: 12px;
+  padding: 15px 25px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 59, 48, 0.3);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 90%;
+}
+
+.fileButton:hover {
+  background-color: rgba(255, 59, 48, 0.1);
+  border-color: #ff3b30;
+  transform: translateY(-2px);
+}
+
+.fileIcon {
+  font-size: 24px;
+  color: #ff3b30;
 }
 
 .submitButton {
-  background-color: #28a745;
+  margin-top: 15px;
+  padding: 16px 30px;
+  background-color: #c41e3a;
   color: white;
   border: none;
-  padding: 15px 0; /* Increased padding for better clickability */
-  border-radius: 6px; /* Slightly more rounded corners */
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   width: 100%;
-  font-size: 18px; /* Larger font size for visibility */
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.submitButton:hover {
-  background-color: #218838;
+.submitButton:hover:not(:disabled) {
+  background-color: #b41935;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.messageBox {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px 25px;
+  border-radius: 15px;
+  background-color: rgba(40, 40, 40, 0.9);
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.error {
+  color: #ff3b30;
+  font-size: 0.95rem;
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.success {
+  color: #34c759;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 15px;
+    gap: 25px;
+  }
+
+  .formHeader {
+    padding: 15px 20px;
+  }
+
+  .formHeader h1 {
+    font-size: 1.6rem;
+  }
+
+  .form {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+
+  .textInput {
+    min-height: 100px;
+    font-size: 1rem;
+    padding: 12px 45px 12px 12px;
+  }
+
+  .submitButton {
+    padding: 14px 25px;
+    font-size: 1rem;
+  }
+
+  .messageBox {
+    padding: 15px 20px;
+    font-size: 1rem;
+  }
 }

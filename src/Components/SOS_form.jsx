@@ -1,29 +1,180 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { MdKeyboardVoice } from "react-icons/md";
-import { FaImage } from "react-icons/fa";
-import styles from "./SOS_form.module.css"; // Import the CSS module
 import { useLocation } from "react-router-dom";
+import {
+  FaAmbulance,
+  FaImage,
+  FaPaperPlane,
+  FaMicrophone,
+} from "react-icons/fa";
+import styles from "./SOS_form.module.css";
 
-function SOSForm() {
-  const [text, setText] = useState("");
-  const fileInputRef = useRef(null); // Ref to handle file input
-  const [image, setImage] = useState();
-
+export default function SOSForm() {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const location = useLocation();
   const accidentId = location.state?.serverResponse;
-  // console.log(accidentId, "accidentId");
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
+  const [isRecording, setIsRecording] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // First, send the voice/text description to Node.js server
+      let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/voice";
+      let response = await fetch(SOS_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          voiceInput: description,
+          accidentId: accidentId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Error submitting description to Node.js server: ${response.status}`
+        );
+      }
+      console.log({
+        accidentID: accidentId,
+        report: description,
+      });
+
+      // Send text data to Flask API
+      let VITE_FLASK_API = import.meta.env.VITE_FLASK_API + "/report";
+      response = await fetch(VITE_FLASK_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accidentID: accidentId,
+          report: description,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error submitting to Flask API: ${response.status}`);
+      }
+
+      // If there's an image, send it separately
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            const base64Image = reader.result;
+
+            // Send to Node.js server
+            SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/image";
+            response = await fetch(SOS_API_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                base64: base64Image,
+                accidentId: accidentId,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error(
+                `Error uploading image to Node.js server: ${response.status}`
+              );
+            }
+
+            // console.log({
+            //   accidentID: accidentId,
+            //   image: base64Image.split(",")[1], // Remove data:image/xyz;base64, prefix
+            // });
+
+            console.log({
+              accidentID: accidentId,
+              image: base64Image, // Remove data:image/xyz;base64, prefix
+            });
+
+            // Send to Flask API\
+            VITE_FLASK_API = import.meta.env.VITE_FLASK_API + "/upload";
+            response = await fetch(VITE_FLASK_API, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                accidentID: accidentId,
+                image: base64Image, // Remove data:image/xyz;base64, prefix
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error(
+                `Error uploading image to Flask API: ${response.status}`
+              );
+            }
+
+            setMessage("Details submitted successfully!");
+            setDescription("");
+            setSelectedFile(null);
+          } catch (error) {
+            console.error("Error uploading image:", error);
+            setMessage("Error uploading image. Please try again.");
+          }
+        };
+
+        reader.onerror = () => {
+          console.error("Error reading file");
+          setMessage("Error reading image file. Please try again.");
+        };
+
+        reader.readAsDataURL(selectedFile);
+      } else {
+        setMessage("Details submitted successfully!");
+        setDescription("");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage(
+        error.message || "Error submitting details. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+
+    // Call for ambulance driver assignment
+    // let VITE_FLASK_API = import.meta.env.VITE_FLASK_API + "/";
+    // response = await fetch(VITE_FLASK_API, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     accidentID: accidentId,
+    //   }),
+    // });
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
   };
 
   const handleVoiceInput = () => {
     if (!("webkitSpeechRecognition" in window)) {
-      alert(
-        "Your browser does not support speech recognition. Please use a different browser or switch to text input."
-      );
+      setError("Speech recognition is not supported in your browser");
       return;
     }
+
+    setIsRecording(true);
+    setError("");
 
     const recognition = new window.webkitSpeechRecognition();
     recognition.continuous = false;
@@ -33,137 +184,100 @@ function SOSForm() {
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
-      console.log("Recognized Speech:", transcript); // Debugging output
-      setText(transcript); // Update local state
-      recognition.stop();
-
-      const payload = {
-        voiceInput: transcript,
-        accidentId: accidentId,
-      };
-
-      console.log("Sending to server:", JSON.stringify(payload)); // Print JSON string before sending
-      let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/voice";
-      // Send the transcript to the Node.js server
-      fetch(SOS_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert(`Response from server: ${data.message}`);
-          console.log("API call for voice: ", data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("Failed to send voice data to server.");
-        });
-
-      let FLASK_API = import.meta.env.VITE_FLASK_API + "/report";
-      fetch(FLASK_API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          alert(`Response from server: ${data.message}`);
-          console.log("API call for voice: ", data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("Failed to send voice data to server.");
-        });
+      setDescription(
+        (prevDescription) =>
+          prevDescription + (prevDescription ? " " : "") + transcript
+      );
+      setIsRecording(false);
     };
 
     recognition.onerror = (event) => {
-      alert("Error occurred in speech recognition: " + event.error);
+      setError("Error in speech recognition. Please try again.");
+      setIsRecording(false);
       recognition.stop();
     };
-  };
 
-  function handleFileChange(event) {
-    console.log(event);
-    var reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = () => {
-      setImage(reader.result);
-      console.log(reader.result);
+    recognition.onend = () => {
+      setIsRecording(false);
     };
-    reader.onerror = (error) => {
-      console.log("Error: ", error);
-    };
-  }
-
-  useEffect(() => {
-    // console.log("Image changed: ", image);
-    uploadImage();
-  }, [image]);
-
-  function uploadImage() {
-    // console.log("Uploading image to server...", image, accidentId);
-    let SOS_API_URL = import.meta.env.VITE_SOS_API_URL + "/image";
-    fetch(SOS_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        base64: image,
-        accidentId: accidentId,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        // setImages([...images, data.url]);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("Failed to upload image to server.");
-      });
-  }
-
-  const submitAccidentReport = (event) => {
-    event.preventDefault();
-    // console.log("Submitting Accident Report:", { text, images });
-    // Further processing or server submission would go here
   };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.formHeader}>Accident Report Form</h1>
-      <form onSubmit={submitAccidentReport}>
+      <header className={styles.formHeader}>
+        <FaAmbulance className={styles.headerIcon} />
+        <h1>Accident Details</h1>
+      </header>
+
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputGroup}>
-          <textarea
-            value={text}
-            onChange={handleTextChange}
-            placeholder="Type here or use voice input..."
-            className={styles.textInput}
-          />
-          <button onClick={handleVoiceInput} className={styles.voiceButton}>
-            <MdKeyboardVoice />
-          </button>
+          <label className={styles.label}>
+            Please describe the accident situation
+          </label>
+          <div className={styles.inputWrapper}>
+            <textarea
+              className={styles.textInput}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Provide details about the accident..."
+              required
+            />
+            <button
+              type="button"
+              onClick={handleVoiceInput}
+              className={styles.voiceButton}
+              disabled={isRecording}
+              title="Click to use voice input"
+            >
+              {isRecording ? (
+                <FaMicrophone className={styles.pulsingIcon} />
+              ) : (
+                <MdKeyboardVoice />
+              )}
+            </button>
+          </div>
+          {error && <div className={styles.error}>{error}</div>}
         </div>
+
         <div className={styles.fileInputContainer}>
-          <input type="file" accept="image/" onChange={handleFileChange} />
-          {image == "" || image == null ? (
-            ""
-          ) : (
-            <img width={100} height={100} src={image} />
-          )}
+          <label className={styles.label}>Upload accident scene photo</label>
+          <label className={styles.fileButton}>
+            <FaImage className={styles.fileIcon} />
+            {selectedFile ? selectedFile.name : "Choose an image"}
+            <input
+              type="file"
+              onChange={handleFileChange}
+              accept="image/*"
+              style={{ display: "none" }}
+            />
+          </label>
         </div>
-        <button type="submit" className={styles.submitButton}>
-          Submit Report
+
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={loading || !description}
+        >
+          {loading ? (
+            <div className={styles.spinner} />
+          ) : (
+            <>
+              <FaPaperPlane />
+              Submit Details
+            </>
+          )}
         </button>
       </form>
+
+      {message && (
+        <div
+          className={`${styles.messageBox} ${
+            message.includes("Error") ? styles.error : styles.success
+          }`}
+        >
+          {message}
+        </div>
+      )}
     </div>
   );
 }
-
-export default SOSForm;
